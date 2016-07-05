@@ -1,6 +1,7 @@
 from tests import utils
 
 import bpy
+import re
 
 
 class TestObjectExport(utils.XRayTestCase):
@@ -20,3 +21,12 @@ class TestObjectExport(utils.XRayTestCase):
         )
         self.assertFileExists(self.outpath('Cube1.object'))
         self.assertFileExists(self.outpath('Cube2.object'))
+
+    def test_obsolete_bones(self):
+        bpy.ops.export_object.xray_objects(
+            objects='ObsoleteBones', directory=self.outpath(),
+            texture_name_from_image_path=False,
+            export_motions=False,
+        )
+        self.assertFileExists(self.outpath('ObsoleteBones.object'))
+        self.assertReportsContains('WARNING', re.compile('bone .* edited with .* version of this plugin'))
