@@ -20,6 +20,15 @@ class TestObjectExport(utils.XRayTestCase):
             texture_name_from_image_path=False
         )
         self.assertFileExists(self.outpath('Cube1.object'))
+        self.assertFileExists(self.outpath('a/b/Cube2.object'))
+
+    def test_export_multi_notusing_paths(self):
+        bpy.ops.export_object.xray_objects(
+            objects='Cube1,Cube2', directory=self.outpath(),
+            use_export_paths=False,
+            texture_name_from_image_path=False
+        )
+        self.assertFileExists(self.outpath('Cube1.object'))
         self.assertFileExists(self.outpath('Cube2.object'))
 
     def test_obsolete_bones(self):
