@@ -31,6 +31,16 @@ class TestObjectExport(utils.XRayTestCase):
         self.assertFileExists(self.outpath('Cube1.object'))
         self.assertFileExists(self.outpath('Cube2.object'))
 
+    def test_export_project(self):
+        for o in bpy.data.objects:
+            o.select = o.name in {'Cube1', 'Cube2'}
+        bpy.ops.export_scene.xray(
+            filepath=self.outpath(),
+            use_selection=True
+        )
+        self.assertFileExists(self.outpath('Cube1.object'))
+        self.assertFileExists(self.outpath('a/b/Cube2.object'))
+
     def test_obsolete_bones(self):
         bpy.ops.export_object.xray_objects(
             objects='ObsoleteBones', directory=self.outpath(),
