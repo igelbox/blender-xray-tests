@@ -12,15 +12,19 @@ class TestObjectExport(utils.XRayTestCase):
             object='Cube1', filepath=self.outpath('Cube1.object'),
             texture_name_from_image_path=False
         )
-        self.assertFileExists(self.outpath('Cube1.object'))
+        self.assertOutputFiles({
+            'Cube1.object'
+        })
 
     def test_export_multi(self):
         bpy.ops.export_object.xray_objects(
             objects='Cube1,Cube2', directory=self.outpath(),
             texture_name_from_image_path=False
         )
-        self.assertFileExists(self.outpath('Cube1.object'))
-        self.assertFileExists(self.outpath('a/b/Cube2.object'))
+        self.assertOutputFiles({
+            'Cube1.object',
+            'a/b/Cube2.object'
+        })
 
     def test_export_multi_notusing_paths(self):
         bpy.ops.export_object.xray_objects(
@@ -28,8 +32,10 @@ class TestObjectExport(utils.XRayTestCase):
             use_export_paths=False,
             texture_name_from_image_path=False
         )
-        self.assertFileExists(self.outpath('Cube1.object'))
-        self.assertFileExists(self.outpath('Cube2.object'))
+        self.assertOutputFiles({
+            'Cube1.object',
+            'Cube2.object'
+        });
 
     def test_export_project(self):
         for o in bpy.data.objects:
@@ -38,8 +44,10 @@ class TestObjectExport(utils.XRayTestCase):
             filepath=self.outpath(),
             use_selection=True
         )
-        self.assertFileExists(self.outpath('Cube1.object'))
-        self.assertFileExists(self.outpath('a/b/Cube2.object'))
+        self.assertOutputFiles({
+            'Cube1.object',
+            'a/b/Cube2.object'
+        });
 
     def test_obsolete_bones(self):
         bpy.ops.export_object.xray_objects(
@@ -47,5 +55,7 @@ class TestObjectExport(utils.XRayTestCase):
             texture_name_from_image_path=False,
             export_motions=False,
         )
-        self.assertFileExists(self.outpath('ObsoleteBones.object'))
+        self.assertOutputFiles({
+            'ObsoleteBones.object',
+        });
         self.assertReportsContains('WARNING', re.compile('bone .* edited with .* version of this plugin'))

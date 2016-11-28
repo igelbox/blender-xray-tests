@@ -18,4 +18,6 @@ class TestAnmExport(utils.XRayTestCase):
         bpy.ops.xray_export.anm(
             filepath=self.outpath('Cube2.anm'),
         )
-        self.assertFileExists(self.outpath('Cube2.anm'))
+        self.assertOutputFiles({
+            'Cube2.anm'
+        })
