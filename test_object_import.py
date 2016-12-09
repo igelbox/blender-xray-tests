@@ -50,3 +50,12 @@ class TestObjectImport(utils.XRayTestCase):
         for l, e in zip(bm.faces[0].loops, [(1, 0), (0, 1), (0, 0)]):
             uv = l[uvl].uv
             self.assertEqual(uv.to_tuple(), e)
+
+    def test_import_vmrefs(self):
+        bpy.ops.xray_import.object(
+            directory=self.relpath(),
+            files=[{'name': 'test_import_vmrefs.object'}],
+        )
+        self.assertReportsNotContains('WARNING')
+        obj = bpy.data.objects['testShape']
+        self.assertEqual(len(obj.data.vertices), 6)
