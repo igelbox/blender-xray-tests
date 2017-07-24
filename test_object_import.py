@@ -37,7 +37,8 @@ class TestObjectImport(utils.XRayTestCase):
             files=[{'name': 'test_import_uv.object'}],
         )
         self.assertReportsNotContains('WARNING')
-        obj = bpy.data.objects['plobj']
+        obj = bpy.data.objects['test_import_uv.object']
+        self.assertEqual(obj.data.name, 'plobj')
         self.assertEqual(obj.material_slots[0].material.texture_slots[0].uv_layer, 'uvm')
         self.assertEqual(len(obj.data.uv_layers), 1)
         self.assertEqual(obj.data.uv_layers[0].name, 'uvm')
